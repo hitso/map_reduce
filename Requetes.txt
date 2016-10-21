@@ -1,0 +1,13 @@
+Question 1 : number of names per origin
+
+select tab.ori, sum(tab.prenom) from (select ltrim(originBis) as ori, count(prenom) as prenom from prenoms_opti LATERAL VIEW explode(origin) prenomTable as originBis GROUP BY originBis) as tab GROUP BY tab.ori;
+
+
+Question 2 : number of names per number of origin
+
+select size(origin), count(prenom) from prenoms_opti group by size(origin);
+
+
+Question 3 : percentage of male and female
+
+select sum(if(person LIKE 'f', 1, 0))/sum(if(1==1,1,0)) as femme, sum(if(person LIKE 'm', 1, 0))/sum(if(1==1,1,0)) FROM prenoms_opti LATERAL VIEW explode(gender) person as person;
